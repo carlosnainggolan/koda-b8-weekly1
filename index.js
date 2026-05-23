@@ -51,7 +51,15 @@ const mainCourseQuestion = "Mau main course apa? ";
 const sideDishQuestion = "Mau side dish apa? ";
 const drinkQuestion = "Mau drink apa? ";
 
-const selectCategory = () => {
+const askQuestion = (questionText) => {
+    return new Promise((resolve) => {
+        rl.question(questionText, (answer) => {
+            resolve(answer);
+        });
+    });
+};
+
+const selectCategory = async () => {
     const displayCategoryList = () => {
         console.log("--- PILIH KATEGORI MENU ---");
         for (let i = 0; i < foodCategory.length; i++) {
@@ -62,27 +70,27 @@ const selectCategory = () => {
     };
 
     displayCategoryList();
-    rl.question(categoryQuestion, (answer) => {
-        const categoryChoice = parseInt(answer);
-        console.clear();
 
-        if (isNaN(categoryChoice)) {
-            console.log("Input harus berupa angka!\n");
-            selectCategory();
-        } else if (categoryChoice < 1 || categoryChoice > 3) {
-            console.log("Tidak ada pilihan tersebut!\n");
-            selectCategory();
-        } else if (categoryChoice === 1) {
-            mainCourse();
-        } else if (categoryChoice === 2) {
-            sideDish();
-        } else if (categoryChoice === 3) {
-            drink();
-        }
-    });
+    const answer = await askQuestion(categoryQuestion);
+    const categoryChoice = parseInt(answer);
+    console.clear();
+
+    if (isNaN(categoryChoice)) {
+        console.log("Input harus berupa angka!\n");
+        selectCategory();
+    } else if (categoryChoice < 1 || categoryChoice > 3) {
+        console.log("Tidak ada pilihan tersebut!\n");
+        selectCategory();
+    } else if (categoryChoice === 1) {
+        mainCourse();
+    } else if (categoryChoice === 2) {
+        sideDish();
+    } else if (categoryChoice === 3) {
+        drink();
+    }
 };
 
-const mainCourse = () => {
+const mainCourse = async () => {
     console.log("--- MENU MAIN COURSE ---");
     for (let i = 0; i < listMainCourse.length; i++) {
         const idMainCourse = listMainCourse[i].id;
@@ -91,14 +99,13 @@ const mainCourse = () => {
         console.log(`${idMainCourse}. ${mainCourseName} : ${mainCoursePrice}`);
     }
 
-    rl.question(mainCourseQuestion, (answerMainCourse) => {
-        const mainCourseChoice = parseInt(answerMainCourse);
-        console.clear();
-        processMenuSelection(mainCourseChoice, listMainCourse, mainCourse);
-    });
+    const answerMainCourse = await askQuestion(mainCourseQuestion);
+    const mainCourseChoice = parseInt(answerMainCourse);
+    console.clear();
+    processMenuSelection(mainCourseChoice, listMainCourse, mainCourse);
 };
 
-const sideDish = () => {
+const sideDish = async () => {
     console.log("--- MENU SIDE DISH ---");
     for (let i = 0; i < listSideDish.length; i++) {
         const idSideDish = listSideDish[i].id;
@@ -107,14 +114,13 @@ const sideDish = () => {
         console.log(`${idSideDish}. ${sideDishName} : ${sideDishPrice}`);
     }
 
-    rl.question(sideDishQuestion, (answerSideDish) => {
-        const sideDishChoice = parseInt(answerSideDish);
-        console.clear();
-        processMenuSelection(sideDishChoice, listSideDish, sideDish);
-    });
+    const answerSideDish = await askQuestion(sideDishQuestion);
+    const sideDishChoice = parseInt(answerSideDish);
+    console.clear();
+    processMenuSelection(sideDishChoice, listSideDish, sideDish);
 };
 
-const drink = () => {
+const drink = async () => { 
     console.log("--- MENU DRINK ---");
     for (let i = 0; i < listDrink.length; i++) {
         const idDrink = listDrink[i].id;
@@ -123,11 +129,10 @@ const drink = () => {
         console.log(`${idDrink}. ${drinkName} : ${drinkPrice}`);
     }
 
-    rl.question(drinkQuestion, (answerDrink) => {
-        const drinkChoice = parseInt(answerDrink);
-        console.clear();
-        processMenuSelection(drinkChoice, listDrink, drink);
-    });
+    const answerDrink = await askQuestion(drinkQuestion);
+    const drinkChoice = parseInt(answerDrink);
+    console.clear();
+    processMenuSelection(drinkChoice, listDrink, drink);
 };
 
 const processMenuSelection = (userChoice, listMenu, retryMenuFunction) => {
@@ -245,7 +250,7 @@ const processPayment = (totalPrice) => {
         console.log(`TUNAI         : ${rupiahFormatter.format(cashGiven)}`);
         console.log(`KEMBALIAN     : ${rupiahFormatter.format(changeAmount)}`);
         console.log("=====================================");
-        console.log("\nTERIMA KASIH ATAS KUNJUNGAN ANDA 🙏");
+        console.log("\nTERIMA KASIH ATAS KUNJUNGAN ANDA");
         console.log("Selamat menikmati hidangan!");
 
         rl.close();
