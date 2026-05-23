@@ -14,7 +14,6 @@ import { createInterface } from 'readline';
 import process from 'process'
 import { completeCheckout } from '../services/service.js';
 
-
 export let cart = [];
 
 export const rl = createInterface({
@@ -115,7 +114,7 @@ export const processMenuSelection = (userChoice, listMenu, retryMenuFunction) =>
       name: selectedMenu.name,
       price: selectedMenu.price
     }];
-    console.log(`\n✓ Berhasil menambahkan [${selectedMenu.name}] ke keranjang.`);
+    console.log(`\n Berhasil menambahkan [${selectedMenu.name}] ke keranjang.`);
     displayCart(cart);
     askMoreOrder();
   } else {
@@ -123,8 +122,6 @@ export const processMenuSelection = (userChoice, listMenu, retryMenuFunction) =>
     retryMenuFunction();
   }
 };
-
-
 
 export const askMoreOrder = () => {
   rl.question("Apakah ada pesanan lain? (y/n): ", (input) => {
@@ -136,7 +133,7 @@ export const askMoreOrder = () => {
         selectCategory();
       },
       'n': () => {
-        completeCheckout();
+        completeCheckout(cart);
       }
     };
 

@@ -24,7 +24,7 @@ export const completeCheckout = (cart) => {
   console.log(`TOTAL BAYAR : ${rupiahFormatter.format(totalPrice)}`);
   console.log("=====================================\n");
 
-  processPayment(totalPrice);
+  processPayment(totalPrice, cart);
 };
 
 const processPayment = (totalPrice, cart) => {
