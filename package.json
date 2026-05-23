@@ -1,0 +1,28 @@
+{
+  "name": "koda-b8-weekly1",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/carlosnainggolan/koda-b8-weekly1#readme",
+  "bugs": {
+    "url": "https://github.com/carlosnainggolan/koda-b8-weekly1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlosnainggolan/koda-b8-weekly1.git"
+  },
+  "license": "ISC",
+  "author": "Carlos Nainggolan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint",
+    "lint:fix": "npx eslint --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "globals": "^17.6.0"
+  }
+}

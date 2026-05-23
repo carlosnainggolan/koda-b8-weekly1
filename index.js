@@ -1,7 +1,9 @@
-const readline = require('readline');
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
+import { createInterface } from 'readline';
+import process from 'process';
+
+const rl = createInterface({
+  input: process.stdin,
+  output: process.stdout
 });
 
 console.log("=========================================");
@@ -11,39 +13,39 @@ console.log("=========================================\n");
 let cart = [];
 
 const foodCategory = [
-    { id: 1, category: "Main Course" },
-    { id: 2, category: "Side Dish" },
-    { id: 3, category: "Drink" }
+  { id: 1, category: "Main Course" },
+  { id: 2, category: "Side Dish" },
+  { id: 3, category: "Drink" }
 ];
 
 const listMainCourse = [
-    { id: 1, name: "1/4 Ayam Nasi", price: 39150 },
-    { id: 2, name: "1 Ekor Ayam Nasi", price: 189599 },
-    { id: 3, name: "Sultan Ayam", price: 320700 },
-    { id: 4, name: "Sultan Lamb", price: 476000 },
-    { id: 5, name: "Personal lamb", price: 97920 }
+  { id: 1, name: "1/4 Ayam Nasi", price: 39150 },
+  { id: 2, name: "1 Ekor Ayam Nasi", price: 189599 },
+  { id: 3, name: "Sultan Ayam", price: 320700 },
+  { id: 4, name: "Sultan Lamb", price: 476000 },
+  { id: 5, name: "Personal lamb", price: 97920 }
 ];
 
 const listSideDish = [
-    { id: 1, name: "Shawarma Chicken", price: 33000 },
-    { id: 2, name: "Shawarma Peri Peri", price: 33000 },
-    { id: 3, name: "Samosa Beef", price: 39000 },
-    { id: 4, name: "Samosa Cheese", price: 39000 },
-    { id: 5, name: "Pisang Kunafa", price: 46500 }
+  { id: 1, name: "Shawarma Chicken", price: 33000 },
+  { id: 2, name: "Shawarma Peri Peri", price: 33000 },
+  { id: 3, name: "Samosa Beef", price: 39000 },
+  { id: 4, name: "Samosa Cheese", price: 39000 },
+  { id: 5, name: "Pisang Kunafa", price: 46500 }
 ];
 
 const listDrink = [
-    { id: 1, name: "Mineral Water", price: 13200 },
-    { id: 2, name: "Lemon tea", price: 19800 },
-    { id: 3, name: "Lemonade", price: 19800 },
-    { id: 4, name: "Teh Tawar", price: 9600 },
-    { id: 5, name: "Karak tea", price: 26500 }
+  { id: 1, name: "Mineral Water", price: 13200 },
+  { id: 2, name: "Lemon tea", price: 19800 },
+  { id: 3, name: "Lemonade", price: 19800 },
+  { id: 4, name: "Teh Tawar", price: 9600 },
+  { id: 5, name: "Karak tea", price: 26500 }
 ];
 
 const rupiahFormatter = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0
+  style: 'currency',
+  currency: 'IDR',
+  minimumFractionDigits: 0
 });
 
 const categoryQuestion = "Mau pesan nomor berapa? ";
@@ -52,209 +54,209 @@ const sideDishQuestion = "Mau side dish apa? ";
 const drinkQuestion = "Mau drink apa? ";
 
 const askQuestion = (questionText) => {
-    return new Promise((resolve) => {
-        rl.question(questionText, (answer) => {
-            resolve(answer);
-        });
+  return new Promise((resolve) => {
+    rl.question(questionText, (answer) => {
+      resolve(answer);
     });
+  });
 };
 
 const selectCategory = async () => {
-    const displayCategoryList = () => {
-        console.log("--- PILIH KATEGORI MENU ---");
-        for (let i = 0; i < foodCategory.length; i++) {
-            const categoryName = foodCategory[i].category;
-            const idCategory = foodCategory[i].id;
-            console.log(`${idCategory}. ${categoryName}`);
-        }
-    };
-
-    displayCategoryList();
-
-    const answer = await askQuestion(categoryQuestion);
-    const categoryChoice = parseInt(answer);
-    console.clear();
-
-    if (isNaN(categoryChoice)) {
-        console.log("Input harus berupa angka!\n");
-        selectCategory();
-    } else if (categoryChoice < 1 || categoryChoice > 3) {
-        console.log("Tidak ada pilihan tersebut!\n");
-        selectCategory();
-    } else if (categoryChoice === 1) {
-        mainCourse();
-    } else if (categoryChoice === 2) {
-        sideDish();
-    } else if (categoryChoice === 3) {
-        drink();
+  const displayCategoryList = () => {
+    console.log("--- PILIH KATEGORI MENU ---");
+    for (let i = 0; i < foodCategory.length; i++) {
+      const categoryName = foodCategory[i].category;
+      const idCategory = foodCategory[i].id;
+      console.log(`${idCategory}. ${categoryName}`);
     }
+  };
+
+  displayCategoryList();
+
+  const answer = await askQuestion(categoryQuestion);
+  const categoryChoice = parseInt(answer);
+  console.clear();
+
+  if (isNaN(categoryChoice)) {
+    console.log("Input harus berupa angka!\n");
+    selectCategory();
+  } else if (categoryChoice < 1 || categoryChoice > 3) {
+    console.log("Tidak ada pilihan tersebut!\n");
+    selectCategory();
+  } else if (categoryChoice === 1) {
+    mainCourse();
+  } else if (categoryChoice === 2) {
+    sideDish();
+  } else if (categoryChoice === 3) {
+    drink();
+  }
 };
 
 const mainCourse = async () => {
-    console.log("--- MENU MAIN COURSE ---");
-    for (let i = 0; i < listMainCourse.length; i++) {
-        const idMainCourse = listMainCourse[i].id;
-        const mainCourseName = listMainCourse[i].name;
-        const mainCoursePrice = rupiahFormatter.format(listMainCourse[i].price);
-        console.log(`${idMainCourse}. ${mainCourseName} : ${mainCoursePrice}`);
-    }
+  console.log("--- MENU MAIN COURSE ---");
+  for (let i = 0; i < listMainCourse.length; i++) {
+    const idMainCourse = listMainCourse[i].id;
+    const mainCourseName = listMainCourse[i].name;
+    const mainCoursePrice = rupiahFormatter.format(listMainCourse[i].price);
+    console.log(`${idMainCourse}. ${mainCourseName} : ${mainCoursePrice}`);
+  }
 
-    const answerMainCourse = await askQuestion(mainCourseQuestion);
-    const mainCourseChoice = parseInt(answerMainCourse);
-    console.clear();
-    processMenuSelection(mainCourseChoice, listMainCourse, mainCourse);
+  const answerMainCourse = await askQuestion(mainCourseQuestion);
+  const mainCourseChoice = parseInt(answerMainCourse);
+  console.clear();
+  processMenuSelection(mainCourseChoice, listMainCourse, mainCourse);
 };
 
 const sideDish = async () => {
-    console.log("--- MENU SIDE DISH ---");
-    for (let i = 0; i < listSideDish.length; i++) {
-        const idSideDish = listSideDish[i].id;
-        const sideDishName = listSideDish[i].name;
-        const sideDishPrice = rupiahFormatter.format(listSideDish[i].price);
-        console.log(`${idSideDish}. ${sideDishName} : ${sideDishPrice}`);
-    }
+  console.log("--- MENU SIDE DISH ---");
+  for (let i = 0; i < listSideDish.length; i++) {
+    const idSideDish = listSideDish[i].id;
+    const sideDishName = listSideDish[i].name;
+    const sideDishPrice = rupiahFormatter.format(listSideDish[i].price);
+    console.log(`${idSideDish}. ${sideDishName} : ${sideDishPrice}`);
+  }
 
-    const answerSideDish = await askQuestion(sideDishQuestion);
-    const sideDishChoice = parseInt(answerSideDish);
-    console.clear();
-    processMenuSelection(sideDishChoice, listSideDish, sideDish);
+  const answerSideDish = await askQuestion(sideDishQuestion);
+  const sideDishChoice = parseInt(answerSideDish);
+  console.clear();
+  processMenuSelection(sideDishChoice, listSideDish, sideDish);
 };
 
 const drink = async () => { 
-    console.log("--- MENU DRINK ---");
-    for (let i = 0; i < listDrink.length; i++) {
-        const idDrink = listDrink[i].id;
-        const drinkName = listDrink[i].name;
-        const drinkPrice = rupiahFormatter.format(listDrink[i].price);
-        console.log(`${idDrink}. ${drinkName} : ${drinkPrice}`);
-    }
+  console.log("--- MENU DRINK ---");
+  for (let i = 0; i < listDrink.length; i++) {
+    const idDrink = listDrink[i].id;
+    const drinkName = listDrink[i].name;
+    const drinkPrice = rupiahFormatter.format(listDrink[i].price);
+    console.log(`${idDrink}. ${drinkName} : ${drinkPrice}`);
+  }
 
-    const answerDrink = await askQuestion(drinkQuestion);
-    const drinkChoice = parseInt(answerDrink);
-    console.clear();
-    processMenuSelection(drinkChoice, listDrink, drink);
+  const answerDrink = await askQuestion(drinkQuestion);
+  const drinkChoice = parseInt(answerDrink);
+  console.clear();
+  processMenuSelection(drinkChoice, listDrink, drink);
 };
 
 const processMenuSelection = (userChoice, listMenu, retryMenuFunction) => {
-    const selectedMenu = listMenu.find(item => item.id === userChoice);
+  const selectedMenu = listMenu.find(item => item.id === userChoice);
 
-    if (selectedMenu) {
-        cart = [...cart, {
-            id: selectedMenu.id,
-            name: selectedMenu.name,
-            price: selectedMenu.price
-        }];
-        console.log(`\n✓ Berhasil menambahkan [${selectedMenu.name}] ke keranjang.`);
-        displayCart();
-        askMoreOrder();
-    } else {
-        console.log("\n Menu tidak valid / tidak ditemukan. Silakan pilih kembali.\n");
-        retryMenuFunction();
-    }
+  if (selectedMenu) {
+    cart = [...cart, {
+      id: selectedMenu.id,
+      name: selectedMenu.name,
+      price: selectedMenu.price
+    }];
+    console.log(`\n✓ Berhasil menambahkan [${selectedMenu.name}] ke keranjang.`);
+    displayCart();
+    askMoreOrder();
+  } else {
+    console.log("\n Menu tidak valid / tidak ditemukan. Silakan pilih kembali.\n");
+    retryMenuFunction();
+  }
 };
 
 const displayCart = () => {
-    console.log("\n--- Isi Keranjang Saat Ini ---");
-    if (cart.length === 0) {
-        console.log("(Keranjang masih kosong)");
-    } else {
-        displayCartSummary();
-    }
-    console.log("-------------------------------\n");
+  console.log("\n--- Isi Keranjang Saat Ini ---");
+  if (cart.length === 0) {
+    console.log("(Keranjang masih kosong)");
+  } else {
+    displayCartSummary();
+  }
+  console.log("-------------------------------\n");
 };
 
 const displayCartSummary = () => {
-    cart.forEach((item, index) => {
-        console.log(`${index + 1}. ${item.name} (${rupiahFormatter.format(item.price)})`);
-    });
+  cart.forEach((item, index) => {
+    console.log(`${index + 1}. ${item.name} (${rupiahFormatter.format(item.price)})`);
+  });
 };
 
 const askMoreOrder = () => {
-    rl.question("Apakah ada pesanan lain? (y/n): ", (input) => {
-        const answer = input.toLowerCase().trim();
-        console.clear();
+  rl.question("Apakah ada pesanan lain? (y/n): ", (input) => {
+    const answer = input.toLowerCase().trim();
+    console.clear();
 
-        const answerActions = {
-            'y': () => {
-                selectCategory();
-            },
-            'n': () => {
-                completeCheckout();
-            }
-        };
+    const answerActions = {
+      'y': () => {
+        selectCategory();
+      },
+      'n': () => {
+        completeCheckout();
+      }
+    };
 
-        const action = answerActions[answer] ?? (() => {
-            console.log(" Pilihan tidak valid. Ketik 'y' untuk ya atau 'n' untuk tidak.\n");
-            askMoreOrder();
-        });
-
-        action();
+    const action = answerActions[answer] ?? (() => {
+      console.log(" Pilihan tidak valid. Ketik 'y' untuk ya atau 'n' untuk tidak.\n");
+      askMoreOrder();
     });
+
+    action();
+  });
 };
 
 const completeCheckout = () => {
-    if (cart.length === 0) {
-        console.log("Keranjang belanja kosong. Terima kasih!");
-        rl.close();
-        return;
-    }
+  if (cart.length === 0) {
+    console.log("Keranjang belanja kosong. Terima kasih!");
+    rl.close();
+    return;
+  }
 
-    console.log("=====================================");
-    console.log("          NOTA PEMBAYARAN            ");
-    console.log("=====================================");
+  console.log("=====================================");
+  console.log("          NOTA PEMBAYARAN            ");
+  console.log("=====================================");
 
-    cart.forEach((item, index) => {
-        console.log(`${index + 1}. ${item.name.padEnd(20)} : ${rupiahFormatter.format(item.price)}`);
-    });
+  cart.forEach((item, index) => {
+    console.log(`${index + 1}. ${item.name.padEnd(20)} : ${rupiahFormatter.format(item.price)}`);
+  });
 
-    console.log("-------------------------------------");
+  console.log("-------------------------------------");
 
-    const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
 
-    console.log(`TOTAL ITEM  : ${cart.length}`);
-    console.log(`TOTAL BAYAR : ${rupiahFormatter.format(totalPrice)}`);
-    console.log("=====================================\n");
+  console.log(`TOTAL ITEM  : ${cart.length}`);
+  console.log(`TOTAL BAYAR : ${rupiahFormatter.format(totalPrice)}`);
+  console.log("=====================================\n");
 
-    processPayment(totalPrice);
+  processPayment(totalPrice);
 };
 
 const processPayment = (totalPrice) => {
-    rl.question("Masukkan jumlah uang tunai yang dibayarkan: Rp. ", (cashInput) => {
-        const cashGiven = parseInt(cashInput.replace(/\D/g, ''));
+  rl.question("Masukkan jumlah uang tunai yang dibayarkan: Rp. ", (cashInput) => {
+    const cashGiven = parseInt(cashInput.replace(/\D/g, ''));
 
-        console.clear();
+    console.clear();
 
-        if (isNaN(cashGiven)) {
-            console.log(" Input uang tidak valid. Silakan masukkan angka saja.\n");
-            return processPayment(totalPrice);
-        }
+    if (isNaN(cashGiven)) {
+      console.log(" Input uang tidak valid. Silakan masukkan angka saja.\n");
+      return processPayment(totalPrice);
+    }
 
-        if (cashGiven < totalPrice) {
-            const amountShortage = totalPrice - cashGiven;
-            console.log(` Uang yang Anda masukkan kurang sebesar: ${rupiahFormatter.format(amountShortage)}`);
-            console.log(`Total tagihan yang harus dibayar: ${rupiahFormatter.format(totalPrice)}\n`);
-            return processPayment(totalPrice);
-        }
+    if (cashGiven < totalPrice) {
+      const amountShortage = totalPrice - cashGiven;
+      console.log(` Uang yang Anda masukkan kurang sebesar: ${rupiahFormatter.format(amountShortage)}`);
+      console.log(`Total tagihan yang harus dibayar: ${rupiahFormatter.format(totalPrice)}\n`);
+      return processPayment(totalPrice);
+    }
 
-        const changeAmount = cashGiven - totalPrice;
+    const changeAmount = cashGiven - totalPrice;
 
-        console.log("=====================================");
-        console.log("          STRUK PEMBAYARAN           ");
-        console.log("              EMADOS                 ");
-        console.log("=====================================");
-        cart.forEach((item, index) => {
-            console.log(`${index + 1}. ${item.name.padEnd(20)} : ${rupiahFormatter.format(item.price)}`);
-        });
-        console.log("-------------------------------------");
-        console.log(`TOTAL BELANJA : ${rupiahFormatter.format(totalPrice)}`);
-        console.log(`TUNAI         : ${rupiahFormatter.format(cashGiven)}`);
-        console.log(`KEMBALIAN     : ${rupiahFormatter.format(changeAmount)}`);
-        console.log("=====================================");
-        console.log("\nTERIMA KASIH ATAS KUNJUNGAN ANDA");
-        console.log("Selamat menikmati hidangan!");
-
-        rl.close();
+    console.log("=====================================");
+    console.log("          STRUK PEMBAYARAN           ");
+    console.log("              EMADOS                 ");
+    console.log("=====================================");
+    cart.forEach((item, index) => {
+      console.log(`${index + 1}. ${item.name.padEnd(20)} : ${rupiahFormatter.format(item.price)}`);
     });
+    console.log("-------------------------------------");
+    console.log(`TOTAL BELANJA : ${rupiahFormatter.format(totalPrice)}`);
+    console.log(`TUNAI         : ${rupiahFormatter.format(cashGiven)}`);
+    console.log(`KEMBALIAN     : ${rupiahFormatter.format(changeAmount)}`);
+    console.log("=====================================");
+    console.log("\nTERIMA KASIH ATAS KUNJUNGAN ANDA");
+    console.log("Selamat menikmati hidangan!");
+
+    rl.close();
+  });
 };
 
 selectCategory();
