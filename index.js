@@ -10,6 +10,7 @@ import {
   sideDishQuestion,
   drinkQuestion
 } from './config/menu.js';
+import { rupiahFormatter } from './utils/formatCurrency.js';   
 
 const rl = createInterface({
   input: process.stdin,
@@ -24,11 +25,7 @@ let cart = [];
 
 
 
-const rupiahFormatter = new Intl.NumberFormat('id-ID', {
-  style: 'currency',
-  currency: 'IDR',
-  minimumFractionDigits: 0
-});
+
 
 
 
