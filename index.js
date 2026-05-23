@@ -10,7 +10,8 @@ import {
   sideDishQuestion,
   drinkQuestion
 } from './config/menu.js';
-import { rupiahFormatter } from './utils/formatCurrency.js';   
+import { rupiahFormatter } from './utils/formatCurrency.js';
+import { displayCart } from './utils/display.js'; 
 
 const rl = createInterface({
   input: process.stdin,
@@ -21,13 +22,7 @@ console.log("=========================================");
 console.log("  AHLAN WA SAHLAN SELAMAT DATANG DI EMADOS");
 console.log("=========================================\n");
 
-let cart = [];
-
-
-
-
-
-
+export let cart = [];
 
 const askQuestion = (questionText) => {
   return new Promise((resolve) => {
@@ -123,7 +118,7 @@ const processMenuSelection = (userChoice, listMenu, retryMenuFunction) => {
       price: selectedMenu.price
     }];
     console.log(`\n✓ Berhasil menambahkan [${selectedMenu.name}] ke keranjang.`);
-    displayCart();
+    displayCart(cart);
     askMoreOrder();
   } else {
     console.log("\n Menu tidak valid / tidak ditemukan. Silakan pilih kembali.\n");
@@ -131,21 +126,7 @@ const processMenuSelection = (userChoice, listMenu, retryMenuFunction) => {
   }
 };
 
-const displayCart = () => {
-  console.log("\n--- Isi Keranjang Saat Ini ---");
-  if (cart.length === 0) {
-    console.log("(Keranjang masih kosong)");
-  } else {
-    displayCartSummary();
-  }
-  console.log("-------------------------------\n");
-};
 
-const displayCartSummary = () => {
-  cart.forEach((item, index) => {
-    console.log(`${index + 1}. ${item.name} (${rupiahFormatter.format(item.price)})`);
-  });
-};
 
 const askMoreOrder = () => {
   rl.question("Apakah ada pesanan lain? (y/n): ", (input) => {
