@@ -33,14 +33,12 @@ export const calculatePayment = (cashInput, totalPrice) => {
   if (isNaN(cashGiven)) {
     throw new Error("Input uang tidak valid. Silakan masukkan angka saja.");
   }
-
   if (cashGiven < totalPrice) {
     const amountShortage = totalPrice - cashGiven;
     const errorShortage = new Error("Uang kurang");
     errorShortage.shortage = amountShortage;
     throw errorShortage;
   }
-
   return {
     cashGiven,
     changeAmount: cashGiven - totalPrice
@@ -54,7 +52,6 @@ const processPayment = (totalPrice, cart) => {
 
     try {
       const { cashGiven, changeAmount } = calculatePayment(cashInput, totalPrice);
-
       console.log("=====================================");
       console.log("          STRUK PEMBAYARAN           ");
       console.log("              EMADOS                 ");

@@ -57,17 +57,13 @@ describe('Pengujian Flow Alur untuk Menaikkan Coverage', () => {
   it('harus sukses mengeksekusi processMenuSelection jika menu ditemukan', () => {
     const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
     let askMoreTerpanggil = false;
-
-    // Menyuntikkan fungsi kosong dan pelacak untuk menguji alur tanpa readline asli
     processMenuSelection(1, mockMenu, () => { }, () => { askMoreTerpanggil = true; });
-
     assert.strictEqual(askMoreTerpanggil, true);
   });
 
   it('harus mengeksekusi retry fungsi jika menu tidak ditemukan pada processMenuSelection', () => {
     const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
     let retryTerpanggil = false;
-
     processMenuSelection(99, mockMenu, () => { retryTerpanggil = true; }, () => { });
 
     assert.strictEqual(retryTerpanggil, true);
