@@ -27,41 +27,58 @@ export const completeCheckout = (cart) => {
   processPayment(totalPrice, cart);
 };
 
+export const calculatePayment = (cashInput, totalPrice) => {
+  const cashGiven = parseInt(cashInput.replace(/\D/g, ''));
+
+  if (isNaN(cashGiven)) {
+    throw new Error("Input uang tidak valid. Silakan masukkan angka saja.");
+  }
+
+  if (cashGiven < totalPrice) {
+    const amountShortage = totalPrice - cashGiven;
+    const errorShortage = new Error("Uang kurang");
+    errorShortage.shortage = amountShortage;
+    throw errorShortage;
+  }
+
+  return {
+    cashGiven,
+    changeAmount: cashGiven - totalPrice
+  };
+};
+
 const processPayment = (totalPrice, cart) => {
   rl.question("Masukkan jumlah uang tunai yang dibayarkan: Rp. ", (cashInput) => {
-    const cashGiven = parseInt(cashInput.replace(/\D/g, ''));
-
+   
     console.clear();
 
-    if (isNaN(cashGiven)) {
-      console.log(" Input uang tidak valid. Silakan masukkan angka saja.\n");
-      return processPayment(totalPrice);
+    try {
+      const { cashGiven, changeAmount } = calculatePayment(cashInput, totalPrice);
+
+      console.log("=====================================");
+      console.log("          STRUK PEMBAYARAN           ");
+      console.log("              EMADOS                 ");
+      console.log("=====================================");
+      cart.forEach((item, index) => {
+        console.log(`${index + 1}. ${item.name.padEnd(20)} : ${rupiahFormatter.format(item.price)}`);
+      });
+      console.log("-------------------------------------");
+      console.log(`TOTAL BELANJA : ${rupiahFormatter.format(totalPrice)}`);
+      console.log(`TUNAI         : ${rupiahFormatter.format(cashGiven)}`);
+      console.log(`KEMBALIAN     : ${rupiahFormatter.format(changeAmount)}`);
+      console.log("=====================================");
+      console.log("\nTERIMA KASIH ATAS KUNJUNGAN ANDA");
+      console.log("Selamat menikmati hidangan!");
+
+      rl.close();
+    } catch (error) {
+      if (error.message === "Uang kurang") {
+        console.log(` Uang yang Anda masukkan kurang sebesar: ${rupiahFormatter.format(error.shortage)}`);
+        console.log(`Total tagihan yang harus dibayar: ${rupiahFormatter.format(totalPrice)}\n`);
+      } else {
+        console.log(` ${error.message}\n`);
+      }
+      return processPayment(totalPrice, cart); // Diperbaiki agar cart ikut terbawa saat rekursif
     }
-
-    if (cashGiven < totalPrice) {
-      const amountShortage = totalPrice - cashGiven;
-      console.log(` Uang yang Anda masukkan kurang sebesar: ${rupiahFormatter.format(amountShortage)}`);
-      console.log(`Total tagihan yang harus dibayar: ${rupiahFormatter.format(totalPrice)}\n`);
-      return processPayment(totalPrice);
-    }
-
-    const changeAmount = cashGiven - totalPrice;
-
-    console.log("=====================================");
-    console.log("          STRUK PEMBAYARAN           ");
-    console.log("              EMADOS                 ");
-    console.log("=====================================");
-    cart.forEach((item, index) => {
-      console.log(`${index + 1}. ${item.name.padEnd(20)} : ${rupiahFormatter.format(item.price)}`);
-    });
-    console.log("-------------------------------------");
-    console.log(`TOTAL BELANJA : ${rupiahFormatter.format(totalPrice)}`);
-    console.log(`TUNAI         : ${rupiahFormatter.format(cashGiven)}`);
-    console.log(`KEMBALIAN     : ${rupiahFormatter.format(changeAmount)}`);
-    console.log("=====================================");
-    console.log("\nTERIMA KASIH ATAS KUNJUNGAN ANDA");
-    console.log("Selamat menikmati hidangan!");
-
-    rl.close();
   });
 };

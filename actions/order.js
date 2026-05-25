@@ -29,7 +29,21 @@ export const askQuestion = (questionText) => {
   });
 };
 
-export const selectCategory = async () => {
+export const determineCategoryRoute = (choice) => {
+  if (isNaN(choice)) {
+    throw new Error("Input harus berupa angka!");
+  }
+  if (choice < 1 || choice > 3) {
+    throw new Error("Tidak ada pilihan tersebut!");
+  }
+  return choice;
+};
+
+export const selectCategory = async (
+  altMainCourse = mainCourse,
+  altSideDish = sideDish,
+  altDrink = drink
+) => {
   const displayCategoryList = () => {
     console.log("--- PILIH KATEGORI MENU ---");
     for (let i = 0; i < foodCategory.length; i++) {
@@ -45,18 +59,18 @@ export const selectCategory = async () => {
   const categoryChoice = parseInt(answer);
   console.clear();
 
-  if (isNaN(categoryChoice)) {
-    console.log("Input harus berupa angka!\n");
-    selectCategory();
-  } else if (categoryChoice < 1 || categoryChoice > 3) {
-    console.log("Tidak ada pilihan tersebut!\n");
-    selectCategory();
-  } else if (categoryChoice === 1) {
-    mainCourse();
-  } else if (categoryChoice === 2) {
-    sideDish();
-  } else if (categoryChoice === 3) {
-    drink();
+  try {
+    const route = determineCategoryRoute(categoryChoice);
+    if (route === 1) await altMainCourse();
+    if (route === 2) await altSideDish();
+    if (route === 3) await altDrink();
+  } catch (error) {
+    console.log(`${error.message}\n`);
+    if (process.env.NODE_ENV !== 'test') {
+      selectCategory();
+    } else {
+      throw error; 
+    }
   }
 };
 
@@ -105,10 +119,17 @@ export const drink = async () => {
   processMenuSelection(drinkChoice, listDrink, drink);
 };
 
-export const processMenuSelection = (userChoice, listMenu, retryMenuFunction) => {
+export const validateMenuSelection = (userChoice, listMenu) => {
   const selectedMenu = listMenu.find(item => item.id === userChoice);
+  if (!selectedMenu) {
+    throw new Error("Menu tidak valid / tidak ditemukan. Silakan pilih kembali.");
+  }
+  return selectedMenu;
+};
 
-  if (selectedMenu) {
+export const processMenuSelection = (userChoice, listMenu, retryMenuFunction) => {
+  try {
+    const selectedMenu = validateMenuSelection(userChoice, listMenu);
     cart = [...cart, {
       id: selectedMenu.id,
       name: selectedMenu.name,
@@ -117,8 +138,8 @@ export const processMenuSelection = (userChoice, listMenu, retryMenuFunction) =>
     console.log(`\n Berhasil menambahkan [${selectedMenu.name}] ke keranjang.`);
     displayCart(cart);
     askMoreOrder();
-  } else {
-    console.log("\n Menu tidak valid / tidak ditemukan. Silakan pilih kembali.\n");
+  } catch (error) {
+    console.log(`\n${error.message}\n`);
     retryMenuFunction();
   }
 };
