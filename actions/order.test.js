@@ -13,48 +13,48 @@ import {
 } from './order.js';
 
 describe('displayCategoryList', () => {
-  it('harus menampilkan daftar kategori menu dengan benar', () => {
+  it('must display the menu category list correctly', () => {
     assert.doesNotThrow(() => displayCategoryList());
   });
 });
 
 describe('determineCategoryRoute', () => {
-  it('harus melempar error jika input bukan angka (NaN)', () => {
+  it('should throw an error if the input is not a number (NaN)', () => {
     assert.throws(
       () => { determineCategoryRoute(NaN); },
       { name: 'Error', message: 'Input harus berupa angka!' }
     );
   });
 
-  it('harus melempar error jika pilihan angka di luar range 1-3', () => {
+  it('should throw an error if the choice is outside the range 1-3', () => {
     assert.throws(
       () => { determineCategoryRoute(5); },
       { name: 'Error', message: 'Tidak ada pilihan tersebut!' }
     );
   });
 
-  it('harus mengembalikan angka pilihan jika input valid (misal: 1)', () => {
+  it('should return the chosen number if the input is valid (e.g., 1)', () => {
     assert.doesNotThrow(() => {
       const result = determineCategoryRoute(1);
       assert.strictEqual(result, 1);
     });
   });
 
-  it('harus mengembalikan angka pilihan jika input valid (misal: 2)', () => {
+  it('should return the chosen number if the input is valid (e.g., 2)', () => {
     assert.doesNotThrow(() => {
       const result = determineCategoryRoute(2);
       assert.strictEqual(result, 2);
     });
   });
 
-  it('harus mengembalikan angka pilihan jika input valid (misal: 3)', () => {
+  it('should return the chosen number if the input is valid (e.g., 3)', () => {
     assert.doesNotThrow(() => {
       const result = determineCategoryRoute(3);
       assert.strictEqual(result, 3);
     });
   });
 
-  it('harus melempar error jika input berupa string yang tidak bisa di-convert ke angka', () => {
+  it('should throw an error if the input is a string that cannot be converted to a number', () => {
     assert.throws(
       () => { determineCategoryRoute("abc"); },
       { name: 'Error', message: 'Input harus berupa angka!' }
@@ -70,14 +70,14 @@ describe('validateMenuSelection', () => {
     { id: 2, name: 'Mie Goreng', price: 18000 }
   ];
 
-  it('harus melempar error jika ID menu tidak ditemukan di dalam list', () => {
+  it('should throw an error if the menu ID is not found in the list', () => {
     assert.throws(
       () => { validateMenuSelection(99, mockListMenu); },
       { name: 'Error', message: 'Menu tidak valid / tidak ditemukan. Silakan pilih kembali.' }
     );
   });
 
-  it('harus mengembalikan objek data menu jika ID ditemukan', () => {
+  it('should return the menu object if the ID is found', () => {
     assert.doesNotThrow(() => {
       const result = validateMenuSelection(1, mockListMenu);
       assert.strictEqual(result.name, 'Nasi Goreng');
@@ -88,7 +88,7 @@ describe('validateMenuSelection', () => {
 
 describe('Pengujian Flow Alur untuk Menaikkan Coverage', () => {
 
-  it('harus mengeksekusi retry fungsi jika menu tidak ditemukan pada processMenuSelection', () => {
+  it('should execute the retry function if the menu is not found in processMenuSelection', () => {
     const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
     let retryTerpanggil = false;
     processMenuSelection(99, mockMenu, () => { retryTerpanggil = true; }, () => { });
@@ -96,14 +96,14 @@ describe('Pengujian Flow Alur untuk Menaikkan Coverage', () => {
     assert.strictEqual(retryTerpanggil, true);
   });
 
-  it('harus mengeksekusi success callback jika menu ditemukan pada processMenuSelection', () => {
+  it('should execute the success callback if the menu is found in processMenuSelection', () => {
     const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
     let successTerpanggil = false;
     processMenuSelection(1, mockMenu, () => { }, () => { successTerpanggil = true; });
     assert.strictEqual(successTerpanggil, true);
   });
 
-  it('harus mengeksekusi retry fungsi jika input tidak valid pada askMoreOrder', () => {
+  it('should execute the retry function if the input is not valid in askMoreOrder', () => {
     let retryTerpanggil = false;
     askMoreOrder();
     rl.emit('line', 'input-salah');
@@ -112,37 +112,37 @@ describe('Pengujian Flow Alur untuk Menaikkan Coverage', () => {
 });
 
 describe('mainCourseShow', () => {
-  it('harus menampilkan daftar menu main course dengan benar', () => {
+  it('must display the main course menu list correctly', () => {
     assert.doesNotThrow(() => mainCourseShow());
   });
-  it('harus menampilkan daftar menu main course dengan benar untuk listMainCourse yang berbeda', () => {
+  it('must display the main course menu list correctly for different listMainCourse', () => {
     assert.doesNotThrow(() => mainCourseShow());
   });
-  it('harus menampilkan daftar menu main course dengan benar untuk listMainCourse yang berbeda', () => {   
+  it('must display the main course menu list correctly for different listMainCourse', () => {   
     assert.doesNotThrow(() => mainCourseShow());
   });
 });
 
 describe('sideDishShow', () => {
-  it('harus menampilkan daftar menu side dish dengan benar', () => {
+  it('must display the side dish menu list correctly', () => {
     assert.doesNotThrow(() => sideDishShow());
   });
-  it('harus menampilkan daftar menu side dish dengan benar untuk listSideDish yang berbeda', () => {
+  it('must display the side dish menu list correctly for different listSideDish', () => {
     assert.doesNotThrow(() => sideDishShow());
   });
-  it('harus menampilkan daftar menu side dish dengan benar untuk listSideDish yang berbeda', () => {
+  it('must display the side dish menu list correctly for different listSideDish', () => {
     assert.doesNotThrow(() => sideDishShow());
   });
 });
 
 describe('drinkShow', () => {
-  it('harus menampilkan daftar menu drink dengan benar', () => {
+  it('must display the drink menu list correctly', () => {
     assert.doesNotThrow(() => drinkShow());
   });
-  it('harus menampilkan daftar menu drink dengan benar untuk listDrink yang berbeda', () => {
+  it('must display the drink menu list correctly for different listDrink', () => {
     assert.doesNotThrow(() => drinkShow());
   });
-  it('harus menampilkan daftar menu drink dengan benar untuk listDrink yang berbeda', () => {
+  it('must display the drink menu list correctly for different listDrinks', () => {
     assert.doesNotThrow(() => drinkShow());
   });
 });
@@ -156,7 +156,7 @@ describe('Unit Testing: askMoreOrder', () => {
     rl.question = originalQuestion;
   });
 
-  it('harus memanggil alur lanjut belanja jika input "y"', (done) => {
+  it('should call the next shopping flow if input is "y"', (done) => {
     rl.question = (queryText, callback) => {
       // Pastikan teks pertanyaan benar
       assert.match(queryText, /Apakah ada pesanan lain\?/);
@@ -166,7 +166,7 @@ describe('Unit Testing: askMoreOrder', () => {
     askMoreOrder();
   });
 
-  it('harus memanggil alur checkout jika input "n"', (done) => {
+  it('should call the checkout flow if input is "n"', (done) => {
     rl.question = (queryText, callback) => {
       callback('n');
       done();
@@ -175,7 +175,7 @@ describe('Unit Testing: askMoreOrder', () => {
     askMoreOrder();
   });
 
-  it('harus melakukan RECURSION (retry) jika input tidak valid', (done) => {
+  it('should perform RECURSION (retry) if input is not valid', (done) => {
     let jumlahPanggilan = 0;
     rl.question = (queryText, callback) => {
       jumlahPanggilan++;
