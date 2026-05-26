@@ -39,22 +39,21 @@ export const determineCategoryRoute = (choice) => {
   return choice;
 };
 
+export const displayCategoryList = () => {
+  console.log("--- PILIH KATEGORI MENU ---");
+  for (let i = 0; i < foodCategory.length; i++) {
+    const categoryName = foodCategory[i].category;
+    const idCategory = foodCategory[i].id;
+    console.log(`${idCategory}. ${categoryName}`);
+  }
+};
+
 export const selectCategory = async (
   altMainCourse = mainCourse,
   altSideDish = sideDish,
   altDrink = drink
 ) => {
-  const displayCategoryList = () => {
-    console.log("--- PILIH KATEGORI MENU ---");
-    for (let i = 0; i < foodCategory.length; i++) {
-      const categoryName = foodCategory[i].category;
-      const idCategory = foodCategory[i].id;
-      console.log(`${idCategory}. ${categoryName}`);
-    }
-  };
-
   displayCategoryList();
-
   const answer = await askQuestion(categoryQuestion);
   const categoryChoice = parseInt(answer);
   console.clear();
@@ -74,45 +73,54 @@ export const selectCategory = async (
   }
 };
 
-export const mainCourse = async () => {
-  console.log("--- MENU MAIN COURSE ---");
+export const mainCourseShow = () => {
   for (let i = 0; i < listMainCourse.length; i++) {
     const idMainCourse = listMainCourse[i].id;
     const mainCourseName = listMainCourse[i].name;
     const mainCoursePrice = rupiahFormatter.format(listMainCourse[i].price);
     console.log(`${idMainCourse}. ${mainCourseName} : ${mainCoursePrice}`);
   }
+};
 
+export const mainCourse = async () => {
+  console.log("--- MENU MAIN COURSE ---");
+  mainCourseShow();
   const answerMainCourse = await askQuestion(mainCourseQuestion);
   const mainCourseChoice = parseInt(answerMainCourse);
   console.clear();
   processMenuSelection(mainCourseChoice, listMainCourse, mainCourse);
 };
 
-export const sideDish = async () => {
-  console.log("--- MENU SIDE DISH ---");
+export const sideDishShow = () => {
   for (let i = 0; i < listSideDish.length; i++) {
     const idSideDish = listSideDish[i].id;
     const sideDishName = listSideDish[i].name;
     const sideDishPrice = rupiahFormatter.format(listSideDish[i].price);
     console.log(`${idSideDish}. ${sideDishName} : ${sideDishPrice}`);
   }
+};
 
+export const sideDish = async () => {
+  console.log("--- MENU SIDE DISH ---");
+  sideDishShow();
   const answerSideDish = await askQuestion(sideDishQuestion);
   const sideDishChoice = parseInt(answerSideDish);
   console.clear();
   processMenuSelection(sideDishChoice, listSideDish, sideDish);
 };
 
-export const drink = async () => {
-  console.log("--- MENU DRINK ---");
+export const drinkShow = () => {
   for (let i = 0; i < listDrink.length; i++) {
     const idDrink = listDrink[i].id;
     const drinkName = listDrink[i].name;
     const drinkPrice = rupiahFormatter.format(listDrink[i].price);
     console.log(`${idDrink}. ${drinkName} : ${drinkPrice}`);
   }
+};
 
+export const drink = async () => {
+  console.log("--- MENU DRINK ---");
+  drinkShow();
   const answerDrink = await askQuestion(drinkQuestion);
   const drinkChoice = parseInt(answerDrink);
   console.clear();
@@ -148,7 +156,6 @@ export const askMoreOrder = () => {
   rl.question("Apakah ada pesanan lain? (y/n): ", (input) => {
     const answer = input.toLowerCase().trim();
     console.clear();
-
     const answerActions = {
       'y': () => {
         selectCategory();
@@ -162,7 +169,6 @@ export const askMoreOrder = () => {
       console.log(" Pilihan tidak valid. Ketik 'y' untuk ya atau 'n' untuk tidak.\n");
       askMoreOrder();
     });
-
     action();
   });
 };
