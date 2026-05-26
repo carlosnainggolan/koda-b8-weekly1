@@ -75,7 +75,7 @@ const processPayment = (totalPrice, cart) => {
       } else {
         console.log(` ${error.message}\n`);
       }
-      return processPayment(totalPrice, cart); // Diperbaiki agar cart ikut terbawa saat rekursif
+      return processPayment(totalPrice, cart);
     }
   });
 };

@@ -3,6 +3,23 @@ import assert from 'node:assert';
 import process from 'node:process';
 import { completeCheckout } from './service.js';
 import { rl } from '../actions/order.js';
+import { calculatePayment } from './service.js';
+
+describe('Unit Test Lengkap calculatePayment', () => {
+  it('harus mengembalikan cashGiven dan changeAmount yang benar untuk input valid', () => {
+    const result = calculatePayment('25000', 20000);
+    assert.strictEqual(result.cashGiven, 25000);
+    assert.strictEqual(result.changeAmount, 5000);
+  });
+
+  it('harus melempar error jika input uang tidak valid (bukan angka)', () => {
+    assert.throws(
+      () => calculatePayment('uang-salah', 20000),
+      { name: 'Error', message: 'Input uang tidak valid. Silakan masukkan angka saja.' }
+    );
+  });
+  
+});
 
 describe('Unit Test Lengkap service.js (Tanpa Mengubah Kode Asli)', () => {
 

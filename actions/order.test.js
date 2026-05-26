@@ -4,8 +4,35 @@ import {
   determineCategoryRoute,
   validateMenuSelection,
   processMenuSelection, 
-  rl
+  rl,
 } from './order.js';
+// import { askMoreOrder } from './order.js';
+
+// describe('askMoreOrder', () => {
+//   it('harus mengeksekusi fungsi selectCategory jika input adalah "y"', (done) => {
+//     const originalQuestion = rl.question;
+//     rl.question = (query, callback) => {
+//       callback('y');
+//     };
+//     const mockSelectCategory = () => {
+//       rl.question = originalQuestion;
+//       done();
+//     };
+//     askMoreOrder(mockSelectCategory);
+//   });
+
+//   it('harus mengeksekusi fungsi completeCheckout jika input adalah "n"', (done) => { 
+//     const originalQuestion = rl.question;
+//     rl.question = (query, callback) => {
+//       callback('n');
+//     };
+//     const mockCompleteCheckout = () => {
+//       rl.question = originalQuestion;
+//       done();
+//     };
+//     askMoreOrder(() => {}, mockCompleteCheckout);
+//   });
+// });
 
 describe('determineCategoryRoute', () => {
   it('harus melempar error jika input bukan angka (NaN)', () => {
@@ -54,19 +81,20 @@ describe('validateMenuSelection', () => {
 
 describe('Pengujian Flow Alur untuk Menaikkan Coverage', () => {
 
-  it('harus sukses mengeksekusi processMenuSelection jika menu ditemukan', () => {
-    const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
-    let askMoreTerpanggil = false;
-    processMenuSelection(1, mockMenu, () => { }, () => { askMoreTerpanggil = true; });
-    assert.strictEqual(askMoreTerpanggil, true);
-  });
-
   it('harus mengeksekusi retry fungsi jika menu tidak ditemukan pada processMenuSelection', () => {
     const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
     let retryTerpanggil = false;
     processMenuSelection(99, mockMenu, () => { retryTerpanggil = true; }, () => { });
 
     assert.strictEqual(retryTerpanggil, true);
+  });
+
+  it('harus mengeksekusi fungsi addToCart jika menu ditemukan pada processMenuSelection', () => {
+    const mockMenu = [{ id: 1, name: 'Ayam Goreng', price: 15000 }];
+    let addToCartTerpanggil = false;
+    processMenuSelection(1, mockMenu, () => { }, () => { addToCartTerpanggil = true; });
+
+    assert.strictEqual(addToCartTerpanggil, true);
   });
 });
 
