@@ -158,7 +158,6 @@ describe('Unit Testing: askMoreOrder', () => {
 
   it('should call the next shopping flow if input is "y"', (done) => {
     rl.question = (queryText, callback) => {
-      // Pastikan teks pertanyaan benar
       assert.match(queryText, /Apakah ada pesanan lain\?/);
       callback('y');
       done();
